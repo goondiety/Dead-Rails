@@ -1,0 +1,205 @@
+pcall(function()
+    setclipboard("https://discord.gg/moondiety")
+end)
+local Players = game:GetService("Players")
+local Lighting = game:GetService("Lighting")
+local PlayerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Remove previous GUI/blur
+for _, gui in ipairs(PlayerGui:GetChildren()) do
+    if gui.Name == "AutoFarmToggleUI" or gui.Name == "ExploitGUI" then
+        gui:Destroy()
+    end
+end
+for _, effect in ipairs(Lighting:GetChildren()) do
+    if effect:IsA("BlurEffect") and effect.Name == "AutoFarmBlur" then
+        effect:Destroy()
+    end
+end
+
+-- Blur effect
+local blur = Instance.new("BlurEffect")
+blur.Name = "AutoFarmBlur"
+blur.Size = 20
+blur.Enabled = true
+blur.Parent = Lighting
+
+-- Main GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "AutoFarmToggleUI"
+screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
+screenGui.Parent = PlayerGui
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0.7, 0, 0.8, 0)
+mainFrame.Position = UDim2.new(0.15, 0, 0.1, 0)
+mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+mainFrame.Visible = true
+mainFrame.Parent = screenGui
+
+local bgGradient = Instance.new("UIGradient")
+bgGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(20, 20, 30)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(40, 40, 60))
+}
+bgGradient.Rotation = 45
+bgGradient.Parent = mainFrame
+
+local frameCorner = Instance.new("UICorner")
+frameCorner.CornerRadius = UDim.new(0, 20)
+frameCorner.Parent = mainFrame
+
+local borderStroke = Instance.new("UIStroke")
+borderStroke.Thickness = 2
+borderStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+borderStroke.Parent = mainFrame
+
+local strokeGradient = Instance.new("UIGradient")
+strokeGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(120, 180, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(200, 130, 255))
+}
+strokeGradient.Rotation = 0
+strokeGradient.Parent = borderStroke
+
+local glowStroke = Instance.new("UIStroke")
+glowStroke.Color = Color3.fromRGB(150, 200, 255)
+glowStroke.Thickness = 4
+glowStroke.Transparency = 0.5
+glowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+glowStroke.Parent = mainFrame
+
+-- Title
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, -40, 0, 50)
+title.Position = UDim2.new(0, 20, 0, 2)
+title.BackgroundTransparency = 1
+title.Text = "Moondiety Auto Win Farm"
+title.TextColor3 = Color3.fromRGB(232, 30, 98)
+title.Font = Enum.Font.GothamBlack
+title.TextSize = 32
+title.TextXAlignment = Enum.TextXAlignment.Center
+title.TextYAlignment = Enum.TextYAlignment.Top
+title.Parent = mainFrame
+
+local underline = Instance.new("Frame")
+underline.Size = UDim2.new(0.5, 0, 0, 2)
+underline.Position = UDim2.new(0.25, 0, 0, 48)
+underline.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+underline.BorderSizePixel = 0
+underline.Parent = mainFrame
+
+local underlineGradient = Instance.new("UIGradient")
+underlineGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(120, 180, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(200, 130, 255))
+}
+underlineGradient.Rotation = 0
+underlineGradient.Parent = underline
+
+-- Status section
+local statusHolder = Instance.new("Frame")
+statusHolder.Size = UDim2.new(1, -60, 0.7, 0)
+statusHolder.Position = UDim2.new(0, 30, 0.22, 0)
+statusHolder.BackgroundTransparency = 1
+statusHolder.Parent = mainFrame
+
+local layout = Instance.new("UIListLayout")
+layout.FillDirection = Enum.FillDirection.Vertical
+layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+layout.VerticalAlignment = Enum.VerticalAlignment.Center
+layout.Padding = UDim.new(0, 10)
+layout.Parent = statusHolder
+
+local function createStatus(text)
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, 0, 0, 28)
+    label.BackgroundTransparency = 1
+    label.Text = text
+    label.TextColor3 = Color3.fromRGB(235, 235, 235)
+    label.Font = Enum.Font.GothamBold
+    label.TextSize = 18
+    label.TextWrapped = true
+    label.TextXAlignment = Enum.TextXAlignment.Center
+    label.TextYAlignment = Enum.TextYAlignment.Center
+
+    local padding = Instance.new("UIPadding")
+    padding.PaddingLeft = UDim.new(0, 10)
+    padding.PaddingRight = UDim.new(0, 10)
+    padding.Parent = label
+
+    label.Parent = statusHolder
+end
+
+createStatus("Auto Win is running...")
+createStatus("Crank - Pending...")
+createStatus("Time remaining - 9:40")
+createStatus("Set script on Auto Execute to enjoy AFK Auto Win Farm")
+createStatus("--Made by Moon--")
+
+local spacer = Instance.new("Frame")
+spacer.Size = UDim2.new(1, 0, 0, 10)
+spacer.BackgroundTransparency = 1
+spacer.Parent = statusHolder
+
+-- Discord Button
+local joinBtn = Instance.new("TextButton")
+joinBtn.Size = UDim2.new(0.6, 0, 0, 36)
+joinBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+joinBtn.Text = "Click to Join Discord like a Good boy ;)"
+joinBtn.Font = Enum.Font.GothamBold
+joinBtn.TextSize = 18
+joinBtn.TextColor3 = Color3.new(1, 1, 1)
+joinBtn.AutoButtonColor = true
+joinBtn.Parent = statusHolder
+
+local joinCorner = Instance.new("UICorner")
+joinCorner.CornerRadius = UDim.new(0, 10)
+joinCorner.Parent = joinBtn
+
+joinBtn.MouseButton1Click:Connect(function()
+    setclipboard("https://discord.gg/wZ4hBXSrxY")
+    joinBtn.Text = "Good boy! Copied link!"
+    task.wait(2)
+    joinBtn.Text = "Join Discord"
+end)
+
+-- Toggle Icon
+local iconGui = Instance.new("ScreenGui")
+iconGui.Name = "ExploitGUI"
+iconGui.ResetOnSpawn = false
+iconGui.Parent = PlayerGui
+
+local iconFrame = Instance.new("Frame")
+iconFrame.Size = UDim2.new(0, 60, 0, 60)
+iconFrame.Position = UDim2.new(0, 20, 0.5, -30)
+iconFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+iconFrame.BorderSizePixel = 0
+iconFrame.Active = true
+iconFrame.Draggable = true
+iconFrame.Parent = iconGui
+
+local iconCorner = Instance.new("UICorner")
+iconCorner.CornerRadius = UDim.new(0, 12)
+iconCorner.Parent = iconFrame
+
+local imageBox = Instance.new("ImageLabel")
+imageBox.Size = UDim2.new(0, 50, 0, 50)
+imageBox.Position = UDim2.new(0, 5, 0, 5)
+imageBox.BackgroundTransparency = 1
+imageBox.Image = "rbxassetid://133495621202705"
+imageBox.Parent = iconFrame
+
+local imageCorner = Instance.new("UICorner")
+imageCorner.CornerRadius = UDim.new(0, 12)
+imageCorner.Parent = imageBox
+
+iconFrame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        local visible = not mainFrame.Visible
+        mainFrame.Visible = visible
+        blur.Enabled = visible
+    end
+end)
+
