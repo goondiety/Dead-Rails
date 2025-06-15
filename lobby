@@ -1,0 +1,56 @@
+local _G = _G or {}
+_G.MakeParty = true
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+local waypoints = {
+    Vector3.new(23, 4, 100),
+    Vector3.new(38, 8, 144),
+    Vector3.new(38, 8, 102)
+}
+
+local function moveToPosition(targetPos)
+    local reached = false
+    local connection
+    connection = humanoid.MoveToFinished:Connect(function(wasReached)
+        reached = wasReached
+        connection:Disconnect()
+    end)
+    humanoid:MoveTo(targetPos)
+    repeat wait() until reached
+end
+
+local firing = false
+local function startFiringRemote()
+    firing = true
+    spawn(function()
+        local remote = game:GetService("ReplicatedStorage"):WaitForChild("Shared")
+            :WaitForChild("Network"):WaitForChild("RemoteEvent")
+            :WaitForChild("CreateParty")
+        while firing do
+            local args = {
+                {
+                    isPrivate = true,
+                    maxMembers = 1,
+                    trainId = "default",
+                    gameMode = "Normal"
+                }
+            }
+            remote:FireServer(unpack(args))
+            wait(1)
+        end
+    end)
+end
+
+for index, position in ipairs(waypoints) do
+    moveToPosition(position)
+    if index == 2 then
+        startFiringRemote()
+    end
+end
+
+_G.MakeParty = false
+
+ 
